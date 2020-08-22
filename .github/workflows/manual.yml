@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
+      tag:
+        # Friendly description to be shown in the UI instead of 'tag'
         description: 'the pandas tag to release'
         # Default value if no value is explicitly provided
         default: '1.1.x'
@@ -18,13 +18,12 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "greet"
-  greet:
+  Configure Release Environment:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
-    - name: Send greeting
-      run: echo "Hello ${{ github.event.inputs.name }}"
+    - name: Set Environment Variables
+      run: echo '::set-env name=TAG::${{ github.event.inputs.tag }}'
+      run: echo $TAG
