@@ -24,7 +24,7 @@ jobs:
     env:
       TAG: ${{ github.event.inputs.tag }}
       GH_USERNAME: ${{ github.actor }}
-      PATH: ${HOME}/miniconda3/bin:${PATH}
+      # PATH: ${HOME}/miniconda3/bin:${PATH}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # - name: Setting conda path
