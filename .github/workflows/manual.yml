@@ -31,5 +31,5 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: test
-      run: pwd
+      run: make init-repos
 
