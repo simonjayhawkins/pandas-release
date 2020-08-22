@@ -25,6 +25,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Set Environment Variables
-      run: echo '::set-env name=TAG::${{ github.event.inputs.tag }}'
-    - name: Show Environment Variables
-      run: echo $TAG
+      run: |
+        echo '::set-env name=TAG::${{ github.event.inputs.tag }}'
+        echo $TAG
+        echo '::set-env name=GH_USERNAME::${{ github.actor }}'
+        echo $GH_USERNAME
+
