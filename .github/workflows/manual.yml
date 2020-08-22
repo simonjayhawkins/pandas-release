@@ -26,4 +26,5 @@ jobs:
     steps:
     - name: Set Environment Variables
       run: echo '::set-env name=TAG::${{ github.event.inputs.tag }}'
+    - name: Show Environment Variables
       run: echo $TAG
