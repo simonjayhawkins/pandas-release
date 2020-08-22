@@ -28,8 +28,8 @@ jobs:
     steps:
     - name: Setting conda path
       run: echo "::set-env name=PATH::${HOME}/miniconda3/bin:${PATH}"
-    - name: Checkout
+    - name: Checkout pandas-release
       uses: actions/checkout@v1
-    - name: test
+    - name: Checkout pandas, pandas-wheels and pandas-feedstock
       run: make init-repos
 
