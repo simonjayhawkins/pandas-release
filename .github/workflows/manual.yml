@@ -30,6 +30,8 @@ jobs:
       run: echo "::set-env name=PATH::${HOME}/miniconda3/bin:${PATH}"
     - name: Checkout pandas-release
       uses: actions/checkout@v1
+    - name: Set up conda environment for release process
+      run: conda env create --file=environment.yml 
     - name: Checkout pandas, pandas-wheels and pandas-feedstock
       run: make init-repos
     - name: Tag the release. (This doesn't push the tag)
