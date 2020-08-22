@@ -38,7 +38,9 @@ jobs:
     - name: Checkout pandas, pandas-wheels and pandas-feedstock
       run: make init-repos
     - name: Tag the release. (This doesn't push the tag)
-      run: make tag
+      run: |
+        conda activate pandas-release
+        make tag
     - name: test
       run: git log
     
