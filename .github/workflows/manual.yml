@@ -26,6 +26,10 @@ jobs:
       GH_USERNAME: ${{ github.actor }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Show Environment Variables
-      run: echo $TAG; echo $GH_USERNAME
+    - name: Setting conda path
+      run: echo "::set-env name=PATH::${HOME}/miniconda3/bin:${PATH}"
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: test
+      run: pwd
 
