@@ -24,11 +24,10 @@ jobs:
     env:
       TAG: ${{ github.event.inputs.tag }}
       GH_USERNAME: ${{ github.actor }}
-      # PATH: ${HOME}/miniconda3/bin:${PATH}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # - name: Setting conda path
-    #   run: echo "::set-env name=PATH::${HOME}/miniconda3/bin:${PATH}"
+    - name: Setting conda path
+      run: echo "::set-env name=PATH::${HOME}/miniconda3/bin:${PATH}"
     - name: Update conda path
       run: |
         conda config --set quiet true --set always_yes true
@@ -38,12 +37,9 @@ jobs:
       uses: actions/checkout@v1
     - name: Set up conda environment for release process
       run: |
-        pwd
-        ls -la
-        cat environment.yml
         conda env create --file=environment.yml
         conda env list
-        conda activate pandas-release
+        source activate pandas-release
         conda list
     - name: Checkout pandas, pandas-wheels and pandas-feedstock
       run: make init-repos
