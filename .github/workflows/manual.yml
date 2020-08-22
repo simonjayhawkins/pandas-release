@@ -27,8 +27,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Setting conda path
-      run: echo "::set-env name=PATH::${HOME}/miniconda3/bin:${PATH}"
-    - name: Update conda path
+      run: echo ::add-path::$CONDA/bin
+    - name: Update conda
       run: |
         conda config --set quiet true --set always_yes true
         conda update -n base -c defaults conda
