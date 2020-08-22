@@ -21,13 +21,11 @@ jobs:
   configure:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    env:
+      TAG: ${{ github.event.inputs.tag }}
+      GH_USERNAME: ${{ github.actor }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Set Environment Variables
-      run: |
-        echo '::set-env name=TAG::${{ github.event.inputs.tag }}'
-        echo $TAG
-        echo '::set-env name=GH_USERNAME::${{ github.actor }}'
-        echo $GH_USERNAME
+    - name: Show Environment Variables
+      run: echo $TAG; echo $GH_USERNAME
 
