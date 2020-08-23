@@ -12,7 +12,7 @@ on:
         # Friendly description to be shown in the UI instead of 'tag'
         description: 'the pandas tag to release'
         # Default value if no value is explicitly provided
-        default: '1.1.x'
+        default: 'v1.1.2'
         # Input has to be provided for the workflow to run
         required: true
 
