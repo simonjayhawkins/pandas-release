@@ -26,6 +26,10 @@ jobs:
       GH_USERNAME: ${{ github.actor }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - name: Setting git user to Pandas Development Team
+      run: |
+       git config --global user.email "pandas-dev@python.org"
+       git config --global user.name "Pandas Development Team"
     - name: Setting conda path
       run: echo ::add-path::$CONDA/bin
     - name: Update conda
