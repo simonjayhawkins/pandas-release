@@ -7,7 +7,7 @@ name: Manual Release
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '25 21 * * *'
+    - cron:  '*/15 * * * *'
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
