@@ -41,7 +41,7 @@ jobs:
         conda update -n base -c defaults conda
         conda list
     - name: Checkout pandas-release
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Update conda environment for release process
       run: |
         conda env update -n base --file=environment.yml
