@@ -21,19 +21,55 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  tag-release:
-    name: Tag the release. (This doesn't push the tag)
-    # The type of runner that the job will run on
+  # tag-release:
+  #   name: Tag the release. (This doesn't push the tag)
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     TAG: ${{ github.event.inputs.tag }}
+  #     GH_USERNAME: ${{ github.actor }}
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #   - name: Setting git user to Pandas Development Team
+  #     run: |
+  #      git config --global user.email "pandas-dev@python.org"
+  #      git config --global user.name "Pandas Development Team"
+  #   - name: Setting conda path
+  #     run: echo ::add-path::$CONDA/bin
+  #   - name: Update conda
+  #     run: |
+  #       conda config --set quiet true --set always_yes true
+  #       conda update -n base -c defaults conda
+  #       conda list
+  #   - name: Checkout pandas-release
+  #     uses: actions/checkout@v2
+  #   - name: Update conda environment for release process
+  #     run: |
+  #       conda env update -n base --file=environment.yml
+  #       conda list
+  #   - name: Checkout pandas, pandas-wheels and pandas-feedstock
+  #     run: make init-repos
+  #   - name: Tag the release. (This doesn't push the tag)
+  #     run: make tag
+  #   - name: Store pandas directory as artifact
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: pandas
+  #       path: |
+  #         pandas
+
+  build-sdist:
+    name: Build the sdist
+    # needs: tag-release
     runs-on: ubuntu-latest
     env:
       TAG: ${{ github.event.inputs.tag }}
-      GH_USERNAME: ${{ github.actor }}
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Setting git user to Pandas Development Team
+    - name: Update for build environment
       run: |
-       git config --global user.email "pandas-dev@python.org"
-       git config --global user.name "Pandas Development Team"
+        apt-get update
+        apt-get install -y build-essential
+        apt-get clean
     - name: Setting conda path
       run: echo ::add-path::$CONDA/bin
     - name: Update conda
@@ -41,43 +77,17 @@ jobs:
         conda config --set quiet true --set always_yes true
         conda update -n base -c defaults conda
         conda list
-    - name: Checkout pandas-release
-      uses: actions/checkout@v2
-    - name: Update conda environment for release process
+    - name: Update conda environment for build process
       run: |
-        conda env update -n base --file=environment.yml
+        conda install -y conda-build conda-verify gcc_linux-64 gxx_linux-64
+        conda clean --all
         conda list
-    - name: Checkout pandas, pandas-wheels and pandas-feedstock
-      run: make init-repos
-    - name: Tag the release. (This doesn't push the tag)
-      run: make tag
-    - name: Store pandas directory as artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: pandas
-        path: |
-          pandas
-
-  build-sdist:
-    name: Build the sdist
-    needs: tag-release
-    runs-on: ubuntu-latest
-    env:
-      TAG: ${{ github.event.inputs.tag }}
-    steps:
-    # - name: Setting conda path
-    #   run: echo ::add-path::$CONDA/bin
-    # - name: Update conda
-    #   run: |
-    #     conda config --set quiet true --set always_yes true
-    #     conda update -n base -c defaults conda
-    #     conda list
-    - name: Checkout pandas-release
-      uses: actions/checkout@v2
-    - name: get pandas directory from artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: pandas
+    # - name: Checkout pandas-release
+    #   uses: actions/checkout@v2
+    # - name: get pandas directory from artifacts
+    #   uses: actions/download-artifact@v2
+    #   with:
+    #     name: pandas
     - name: test
       run: |
         pwd
