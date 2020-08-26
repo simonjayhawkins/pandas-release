@@ -55,8 +55,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: pandas
-        path: |
-          pandas
+        path: pandas/
 
   build-sdist:
     name: Build the sdist
@@ -93,13 +92,16 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: pandas
+        path: pandas
     - name: build the sdist
       # from ./scripts/build_sdist.sh
       run: |
+        pwd
+        ls -latr
         cd pandas
         rm -rf dist
         git clean -xfd
         pwd
-        ls -la
+        ls -latr
         python setup.py clean --quiet
         python setup.py sdist --formats=gztar --quiet
