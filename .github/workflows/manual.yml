@@ -50,5 +50,36 @@ jobs:
       run: make init-repos
     - name: Tag the release. (This doesn't push the tag)
       run: make tag
-    
+    - name: Store pandas directory as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: pandas
+        path: |
+          pandas
 
+  build-sdist:
+    name: Build the sdist
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.inputs.tag }}
+    steps:
+    # - name: Setting conda path
+    #   run: echo ::add-path::$CONDA/bin
+    # - name: Update conda
+    #   run: |
+    #     conda config --set quiet true --set always_yes true
+    #     conda update -n base -c defaults conda
+    #     conda list
+    - name: Checkout pandas-release
+      uses: actions/checkout@v2
+    - name: get pandas directory from artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: pandas
+    - name: test
+      run: |
+        pwd
+        ls -latr
+        cd pandas
+        ls -latr
+        git log
