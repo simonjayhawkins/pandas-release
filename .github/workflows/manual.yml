@@ -67,14 +67,14 @@ jobs:
     steps:
     # Remove apt repos that are known to break from time to time 
     # See https://github.com/actions/virtual-environments/issues/323  
-    - name: Remove broken apt repos [Ubuntu]
-      run: |
-        for apt_file in `grep -lr microsoft /etc/apt/sources.list.d/`; do sudo rm $apt_file; done
+    # - name: Remove broken apt repos [Ubuntu]
+    #   run: |
+    #     for apt_file in `grep -lr microsoft /etc/apt/sources.list.d/`; do sudo rm $apt_file; done
     - name: Update for build environment
       run: |
-        apt-get update
-        apt-get install -y build-essential
-        apt-get clean
+        sudo apt-get update
+        sudo apt-get install -y build-essential
+        sudo apt-get clean
     - name: Setting conda path
       run: echo ::add-path::$CONDA/bin
     - name: Update conda
