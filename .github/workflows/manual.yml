@@ -84,7 +84,7 @@ jobs:
         conda list
     - name: Update conda environment for build process
       run: |
-        conda install -y conda-build conda-verify gcc_linux-64 gxx_linux-64
+        conda install -y conda-build conda-verify gcc_linux-64 gxx_linux-64 numpy pytz python-dateutil nomkl Cython
         conda clean --all
         conda list
     - name: Checkout pandas-release
@@ -94,6 +94,10 @@ jobs:
       with:
         name: pandas
     - name: build the sdist
+      # from ./scripts/build_sdist.sh
       run: |
-        ln -s pandas /pandas
-        ./scripts/build_sdist.sh
+        cd pandas
+        rm -rf dist
+        git clean -xfd
+        python setup.py clean --quiet
+        python setup.py sdist --formats=gztar --quiet
