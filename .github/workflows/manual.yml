@@ -125,6 +125,12 @@ jobs:
         conda create -n pip-test -y python=3.7 numpy pytz python-dateutil pytest pytest-mock hypothesis nomkl
         conda clean --all
         conda list
+    - name: get pandas directory from artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: tagged_pandas
+    - name:  extract achive
+      run: tar -xzvf tagged_pandas.tar.gz
     - name: get sdist from artifacts
       uses: actions/download-artifact@v2
       with:
@@ -135,7 +141,7 @@ jobs:
         pwd
         ls -latr
         ls -latr pandas
-        ls -latr dist
+        ls -latr pandas/dist
     - name: Create wheel
       run: |
         source activate pip-test
