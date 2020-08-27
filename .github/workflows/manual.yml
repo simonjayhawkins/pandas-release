@@ -104,6 +104,9 @@ jobs:
         python setup.py clean --quiet
         python setup.py sdist --formats=gztar --quiet
     - name: Store sdist archive as artifact
+      run: |
+        pwd
+        ls -latr
       uses: actions/upload-artifact@v2
       with:
         name: pandas-${{ github.event.inputs.version }}.tar.gz
