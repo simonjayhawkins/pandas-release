@@ -1,5 +1,3 @@
-# This is a basic workflow that is manually triggered
-
 name: Manual Release
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
@@ -58,7 +56,7 @@ jobs:
       with:
         name: tagged_pandas
         path: tagged_pandas.tar.gz
-        if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
+        if-no-files-found: error
 
   build-sdist:
     name: Build the sdist
@@ -99,26 +97,26 @@ jobs:
       run: tar -xzvf tagged_pandas.tar.gz
     - name: list files
       run: ls -latr
-    # - name: build the sdist
-    #   # from ./scripts/build_sdist.sh
-    #   # git reset added since using artifacts seems to modify files
-    #   working-directory: pandas
-    #   run: |
-    #     git status
-    #     rm -rf dist
-    #     git reset HEAD --hard
-    #     git clean -xfd
-    #     git status
-    #     python setup.py clean --quiet
-    #     python setup.py sdist --formats=gztar --quiet
-    # - name: pwd
-    #   run: |
-    #     pwd
-    #     ls -latr
-    # - name: Store sdist archive as artifact
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: pandas-${{ github.event.inputs.version }}.tar.gz
-    #     path: pandas/sdist/pandas-${{ github.event.inputs.version }}.tar.gz
-    #     if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
+    - name: build the sdist
+      # from ./scripts/build_sdist.sh
+      working-directory: pandas
+      run: |
+        git status
+        rm -rf dist
+        git clean -xfd
+        git status
+        python setup.py clean --quiet
+        python setup.py sdist --formats=gztar --quiet
+    - name: pwd
+      run: |
+        pwd
+        ls -latr
+        ls -latr pandas
+        ls -latr pandas/sdist
+    - name: Store sdist archive as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: pandas-${{ github.event.inputs.version }}.tar.gz
+        path: pandas/sdist/pandas-${{ github.event.inputs.version }}.tar.gz
+        if-no-files-found: error
 
