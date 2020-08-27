@@ -95,14 +95,13 @@ jobs:
         path: pandas
     - name: build the sdist
       # from ./scripts/build_sdist.sh
+      # git reset added since using artifacts seems to modify files
       working-directory: pandas
       run: |
-        # cd pandas
         git status
         rm -rf dist
+        git reset HEAD --hard
         git clean -xfd
         git status
-        pwd
-        ls -latr
         python setup.py clean --quiet
         python setup.py sdist --formats=gztar --quiet
