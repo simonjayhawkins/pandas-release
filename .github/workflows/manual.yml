@@ -95,12 +95,13 @@ jobs:
         path: pandas
     - name: build the sdist
       # from ./scripts/build_sdist.sh
+      working-directory: pandas
       run: |
-        pwd
-        ls -latr
-        cd pandas
+        # cd pandas
+        git status
         rm -rf dist
         git clean -xfd
+        git status
         pwd
         ls -latr
         python setup.py clean --quiet
