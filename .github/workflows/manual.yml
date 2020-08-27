@@ -130,6 +130,12 @@ jobs:
       with:
         name: pandas-${{ github.event.inputs.version }}.tar.gz
         path: pandas/dist/pandas-${{ github.event.inputs.version }}.tar.gz
+    - name: list files
+      run: |
+        pwd
+        ls -latr
+        ls -latr pandas
+        ls -latr dist
     - name: Create wheel
       run: |
         source activate pip-test
