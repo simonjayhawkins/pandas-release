@@ -101,12 +101,6 @@ jobs:
         git clean -xfd
         python setup.py clean --quiet
         python setup.py sdist --formats=gztar --quiet
-    - name: list files
-      run: |
-        pwd
-        ls -latr
-        ls -latr pandas
-        ls -latr pandas/dist
     - name: Store sdist archive as artifact
       uses: actions/upload-artifact@v2
       with:
@@ -146,6 +140,7 @@ jobs:
         python -m pip install --no-deps --no-index --find-links=pandas/dist --only-binary=pandas pandas
         conda list
     - name: Test
+      # test_missing_required_dependencies: https://github.com/pandas-dev/pandas/issues/33999
       run: |
         source activate pip-test
-        python -c "import pandas; pandas.test(extra_args=['-m not clipboard', '--skip-slow', '--skip-network', '--skip-db'])"
+        python -c "import pandas; pandas.test(extra_args=['-m not clipboard', '--skip-slow', '--skip-network', '--skip-db', '-k not test_missing_required_dependency'])"
