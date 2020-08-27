@@ -143,7 +143,8 @@ jobs:
     - name: Install pandas
       run: |
         source activate pip-test
-        python -m pip install --no-deps --no-index --find-links=/pandas/dist --only-binary=pandas pandas
+        python -m pip install --no-deps --no-index --find-links=pandas/dist --only-binary=pandas pandas
+        conda list
     - name: Test
       run: |
         source activate pip-test
