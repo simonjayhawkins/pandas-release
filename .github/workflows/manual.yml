@@ -51,15 +51,15 @@ jobs:
       run: make init-repos
     - name: Tag the release. (This doesn't push the tag)
       run: make tag
-    - name: archive pandas directory to prevent permission loss
+    - name: Archive pandas directory to prevent permission loss
       run: tar -czvf tagged_pandas.tar.gz pandas
     - name: list files
       run: ls -latr
-    - name: Store pandas directory as artifact
+    - name: Store tagged pandas directory archive as artifact
       uses: actions/upload-artifact@v2
       with:
         name: pandas
-        path: does_not_exist/
+        path: tagged_pandas.tar.gz
         if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
   # build-sdist:
