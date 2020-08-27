@@ -11,11 +11,11 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      tag:
-        # Friendly description to be shown in the UI instead of 'tag'
-        description: 'the pandas tag to release'
+      version:
+        # Friendly description to be shown in the UI instead of 'version'
+        description: 'the pandas version to release'
         # Default value if no value is explicitly provided
-        default: 'v1.1.2'
+        default: '1.1.2'
         # Input has to be provided for the workflow to run
         required: true
 
@@ -26,7 +26,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     env:
-      TAG: ${{ github.event.inputs.tag }}
+      TAG: v${{ github.event.inputs.version }}
       GH_USERNAME: ${{ github.actor }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -61,8 +61,6 @@ jobs:
     name: Build the sdist
     needs: tag-release
     runs-on: ubuntu-latest
-    env:
-      TAG: ${{ github.event.inputs.tag }}
     steps:
     # Remove apt repos that are known to break from time to time 
     # See https://github.com/actions/virtual-environments/issues/323  
@@ -105,3 +103,8 @@ jobs:
         git status
         python setup.py clean --quiet
         python setup.py sdist --formats=gztar --quiet
+    - name: Store sdist archive as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: pandas-${{ github.event.inputs.version }}.tar.gz
+        path: pandas/sdist/pandas-${{ github.event.inputs.version }}.tar.gz
