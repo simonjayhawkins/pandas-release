@@ -125,3 +125,8 @@ jobs:
         conda create -n pip-test -y python=3.7 numpy pytz python-dateutil pytest pytest-mock hypothesis nomkl
         conda clean --all
         conda list
+    - name: Create wheel
+      run: |
+        mkdir -p pandas/dist
+        source activate pip-test
+        python3 -m pip wheel --no-deps --wheel-dir=pandas/dist pandas-${{ github.event.inputs.version }}.tar.gz
