@@ -131,30 +131,20 @@ jobs:
         conda create -n pip-test -y python=3.7 numpy pytz python-dateutil pytest pytest-mock hypothesis nomkl
         conda clean --all
         conda list
-    # - name: get pandas directory from artifacts
-    #   uses: actions/download-artifact@v2
-    #   with:
-    #     name: tagged_pandas
-    # - name:  extract achive
-    #   run: tar -xzvf tagged_pandas.tar.gz
     - name: get sdist from artifacts
       uses: actions/download-artifact@v2
       with:
         name: pandas-${{ github.event.inputs.version }}.tar.gz
         path: pandas/dist/
-    - name: list files
-      run: |
-        pwd
-        ls -latr
-        ls -latr pandas
-        ls -latr pandas/dist
-    - name: list versions
-      run:  |
-        python --version
-        python3 --version
     - name: Create wheel
       run: |
         source activate pip-test
-        python --version
-        python3 --version
         python -m pip wheel --no-deps --wheel-dir=pandas/dist pandas/dist/pandas-${{ github.event.inputs.version }}.tar.gz
+    - name: Install pandas
+      run: |
+        source activate pip-test
+        python -m pip install --no-deps --no-index --find-links=/pandas/dist --only-binary=pandas pandas
+    - name: Test
+      run: |
+        source activate pip-test
+        python -c "import pandas; pandas.test(extra_args=['-m not clipboard', '--skip-slow', '--skip-network', '--skip-db'])"
