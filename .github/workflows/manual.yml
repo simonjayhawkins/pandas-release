@@ -101,6 +101,12 @@ jobs:
         git clean -xfd
         python setup.py clean --quiet
         python setup.py sdist --formats=gztar --quiet
+    - name: list files
+      run: |
+        pwd
+        ls -latr
+        ls -latr pandas
+        ls -latr pandas/dist
     - name: Store sdist archive as artifact
       uses: actions/upload-artifact@v2
       with:
