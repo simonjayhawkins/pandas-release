@@ -17,7 +17,8 @@ jobs:
     - name: update runner environment and install pdflatex
       run: |
         sudo apt-get update
-        sudo apt-get install -y texlive-latex-base texlive-fonts-recommended xclip build-essential
+        # sudo apt-get install -y apt-get install texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra xclip build-essential
+        sudo apt-get install -y texlive-full xclip build-essential
         sudo apt-get clean
     - name: Setting conda path
       run: echo ::add-path::$CONDA/bin
@@ -59,7 +60,7 @@ jobs:
       with:
         name: pandas.zip
         path: pandas/doc/build/html/pandas.zip
-        # if-no-files-found: error
+        if-no-files-found: error
     - name: Create PDF Documentation 
       working-directory: pandas/doc
       run: |
