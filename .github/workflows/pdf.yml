@@ -17,7 +17,7 @@ jobs:
     - name: update runner environment and install pdflatex
       run: |
         sudo apt-get update
-        sudo apt-get install -y texlive-latex-base xclip build-essential
+        sudo apt-get install -y texlive-latex-base texlive-fonts-recommended xclip build-essential
         sudo apt-get clean
     - name: Setting conda path
       run: echo ::add-path::$CONDA/bin
@@ -43,7 +43,7 @@ jobs:
       run: |
         source activate pandas
         python setup.py build_ext -i -j 4
-        python -c "import pandas as pd;pd.__version__"
+        python -c "import pandas as pd;print(pd.__version__)"
     - name: Create HTML Documentation 
       working-directory: pandas/doc
       run: |
