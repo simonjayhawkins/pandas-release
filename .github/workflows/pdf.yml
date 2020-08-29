@@ -20,18 +20,41 @@ jobs:
     #     # sudo apt-get install -y texlive-full xclip build-essential
     #     sudo apt-get install -y xclip build-essential
     #     sudo apt-get clean
-    # - name: Setting conda path
-    #   run: echo ::add-path::$CONDA/bin
-    # - name: Update conda
-    #   run: |
-    #     conda config --set quiet true --set always_yes true
-    #     conda update -n base -c defaults conda
-    #     conda list
-    - name: Checkout pandas
+    - name: Setting conda path
+      run: echo ::add-path::$CONDA/bin
+    - name: Update conda
+      run: |
+        conda config --set quiet true --set always_yes true
+        conda update -n base -c defaults conda
+        conda list
+    - name: Checkout pandas 
       run: |
         git clone https://github.com/pandas-dev/pandas
         cd pandas
         git status
         git checkout $TAG
-        git status
-
+    - name: Create conda environment
+      run: |
+        conda env create -n pandas --file=pandas/environment.yml
+        conda uninstall -y --force pandas
+        conda list
+    - name: Build pandas from source
+      working-directory: pandas
+      run: |
+        source activate pandas
+        python setup.py build_ext -i -j 4
+    - name: Create HTML Documentation 
+      working-directory: pandas/doc
+      run: |
+        source activate pandas
+        ./make.py html
+    - name: Create HTML Documentation (zipped) 
+      working-directory: pandas/doc
+      run: |
+        source activate pandas
+        ./make.py zip_html
+    - name: Create PDF Documentation 
+      working-directory: pandas/doc
+      run: |
+        source activate pandas
+        ./make.py latex_forced
