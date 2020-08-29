@@ -1,0 +1,19 @@
+name: Create PDF Documentation
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'pandas version'
+        default: '1.1.2'
+        required: true
+
+jobs:
+  create-pdf:
+    runs-on: ubuntu-latest
+    steps:
+    - name: install texlive-full
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y texlive-full xclip
+        sudo apt-get clean
