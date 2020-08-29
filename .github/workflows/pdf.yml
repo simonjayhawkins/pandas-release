@@ -54,8 +54,20 @@ jobs:
       run: |
         source activate pandas
         ./make.py zip_html
+    - name: Store zip archive as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: pandas.zip
+        path: pandas/doc/build/html/pandas.zip
+        # if-no-files-found: error
     - name: Create PDF Documentation 
       working-directory: pandas/doc
       run: |
         source activate pandas
         ./make.py latex_forced
+    - name: Store pdf as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: pandas.pdf
+        path: pandas/doc/build/latex/pandas.pdf
+        if-no-files-found: error
