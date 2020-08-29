@@ -5,15 +5,33 @@ on:
     inputs:
       version:
         description: 'pandas version'
-        default: '1.1.2'
+        default: '1.1.1'
         required: true
 
 jobs:
   create-pdf:
     runs-on: ubuntu-latest
+    env:
+      TAG: v${{ github.event.inputs.version }}
     steps:
-    - name: install texlive-full
+    # - name: update runner environment and install texlive-full
+    #   run: |
+    #     sudo apt-get update
+    #     # sudo apt-get install -y texlive-full xclip build-essential
+    #     sudo apt-get install -y xclip build-essential
+    #     sudo apt-get clean
+    # - name: Setting conda path
+    #   run: echo ::add-path::$CONDA/bin
+    # - name: Update conda
+    #   run: |
+    #     conda config --set quiet true --set always_yes true
+    #     conda update -n base -c defaults conda
+    #     conda list
+    - name: Checkout pandas
       run: |
-        sudo apt-get update
-        sudo apt-get install -y texlive-full xclip
-        sudo apt-get clean
+        git clone https://github.com/pandas-dev/pandas
+        cd pandas
+        git status
+        git checkout $TAG
+        git status
+
