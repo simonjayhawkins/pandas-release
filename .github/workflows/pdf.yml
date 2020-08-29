@@ -14,17 +14,16 @@ jobs:
     env:
       TAG: v${{ github.event.inputs.version }}
     steps:
-    # - name: update runner environment and install texlive-full
-    #   run: |
-    #     sudo apt-get update
-    #     # sudo apt-get install -y texlive-full xclip build-essential
-    #     sudo apt-get install -y xclip build-essential
-    #     sudo apt-get clean
+    - name: update runner environment and install texlive-full
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y texlive-full xclip build-essential
+        sudo apt-get clean
     - name: Setting conda path
       run: echo ::add-path::$CONDA/bin
     - name: Update conda
       run: |
-        conda config --set quiet true --set always_yes true
+        conda config --set always_yes true
         conda update -n base -c defaults conda
         conda list
     - name: Checkout pandas 
@@ -36,17 +35,21 @@ jobs:
     - name: Create conda environment
       run: |
         conda env create -n pandas --file=pandas/environment.yml
+        source activate pandas
         conda uninstall -y --force pandas || true
         conda list
     - name: Build pandas from source
       working-directory: pandas
       run: |
         source activate pandas
+        conda list pandas
         python setup.py build_ext -i -j 4
+        conda list pandas
     - name: Create HTML Documentation 
       working-directory: pandas/doc
       run: |
         source activate pandas
+        python -c "import pandas as pd;pd.__version__"
         ./make.py html
     - name: Create HTML Documentation (zipped) 
       working-directory: pandas/doc
