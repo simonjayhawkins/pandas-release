@@ -28,6 +28,8 @@ jobs:
         conda create -n conda-build -y conda-build conda-verify gcc_linux-64 gxx_linux-64
         conda clean --all
         conda list
+    - name: Checkout pandas-release
+      uses: actions/checkout@v2
     # - name: get sdist from artifacts
     #   uses: actions/download-artifact@v2
     #   with:
