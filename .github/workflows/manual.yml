@@ -51,15 +51,17 @@ jobs:
     - name: Tag the release. (This doesn't push the tag)
       run: make tag
     - name: Check release notes are in sync
-      run: git diff ${{ github.event.inputs.version }} master doc/source/whatsnew/$TAG.rst
+      run: git diff $TAG master doc/source/whatsnew/$TAG.rst
     - name: Archive pandas directory to prevent permission loss
       run: tar -czvf tagged_pandas.tar.gz pandas
+      if: always()
     - name: Store tagged pandas directory archive as artifact
       uses: actions/upload-artifact@v2
       with:
         name: tagged_pandas
         path: tagged_pandas.tar.gz
         if-no-files-found: error
+      if: always()
 
   build-sdist:
     name: Build the sdist
