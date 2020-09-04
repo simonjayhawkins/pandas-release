@@ -32,7 +32,8 @@ test:
     - pytest-mock
     - hypothesis
   commands:
-    - python -c "import pandas; pandas.test(extra_args=['-m not clipboard', '--skip-slow', '--skip-network', '--skip-db'])"
+      # test_missing_required_dependencies: https://github.com/pandas-dev/pandas/issues/33999
+    - python -c "import pandas; pandas.test(extra_args=['-m not clipboard', '--skip-slow', '--skip-network', '--skip-db', '-k not test_missing_required_dependency'])"
 
 about:
   home: http://pandas.pydata.org
