@@ -23,11 +23,11 @@ jobs:
         conda config --set quiet true --set always_yes true
         conda update -n base -c defaults conda
         conda list
-    # - name: Create conda environment
-    #   run: |
-    #     conda create -n conda-test -y python=3.7 numpy pytz python-dateutil pytest pytest-mock hypothesis nomkl
-    #     conda clean --all
-    #     conda list
+    - name: Create conda environment
+      run: |
+        conda create -n conda-build -y conda-build conda-verify gcc_linux-64 gxx_linux-64
+        conda clean --all
+        conda list
     # - name: get sdist from artifacts
     #   uses: actions/download-artifact@v2
     #   with:
@@ -35,5 +35,5 @@ jobs:
     #     path: pandas/dist/
     - name: Conda Build and Test
       run: |
-        # source activate conda-test
+        source activate conda-build
         conda build --numpy=1.17.3 --python=3.8 ./recipe --output-folder=/pandas/dist
