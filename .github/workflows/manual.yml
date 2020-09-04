@@ -180,5 +180,5 @@ jobs:
     - name: Conda Build and Test
       run: |
         source activate conda-build
-        conda build --numpy=1.17.3 --python=3.8 ./recipe --output-folder=/pandas/dist
+        conda build --numpy=1.17.3 --python=3.8 ./recipe --output-folder=pandas/dist
 
