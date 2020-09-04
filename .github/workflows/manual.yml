@@ -52,7 +52,7 @@ jobs:
       run: make tag
     - name: Check release notes are in sync
       working-directory: pandas
-      run: git diff $TAG master -- doc/source/whatsnew/$TAG.rst
+      run: git diff --exit-code $TAG master -- doc/source/whatsnew/$TAG.rst
     - name: Archive pandas directory to prevent permission loss
       run: tar -czvf tagged_pandas.tar.gz pandas
       if: always()
