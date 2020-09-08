@@ -50,6 +50,10 @@ jobs:
       run: make init-repos
     - name: Tag the release. (This doesn't push the tag)
       run: make tag
+    - name: Show git log
+      working-directory: pandas
+      run: |
+        git log -n 5
     - name: Check release notes are in sync
       working-directory: pandas
       run: git diff --exit-code $TAG master -- doc/source/whatsnew/$TAG.rst
