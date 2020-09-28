@@ -1,4 +1,4 @@
-name: Manual Release
+name: Tag Release
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -23,7 +23,6 @@ jobs:
     name: Tag the release. (This doesn't push the tag)
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    continue-on-error: true
     env:
       TAG: v${{ github.event.inputs.version }}
       GH_USERNAME: ${{ github.actor }}
@@ -49,19 +48,30 @@ jobs:
       working-directory: pandas
       run: |
         git log -n 5
-    - name: Check release notes are in sync
-      working-directory: pandas
-      run: git diff --exit-code $TAG master -- doc/source/whatsnew/$TAG.rst
     - name: Archive pandas directory to prevent permission loss
       run: tar -czvf tagged_pandas.tar.gz pandas
-      if: always()
     - name: Store tagged pandas directory archive as artifact
       uses: actions/upload-artifact@v2
       with:
         name: tagged_pandas
         path: tagged_pandas.tar.gz
         if-no-files-found: error
-      if: always()
+
+  check-release-notes:
+    name: Check release notes are in sync
+    runs-on: ubuntu-latest
+    env:
+      TAG: v${{ github.event.inputs.version }}
+    steps:
+    - name: get pandas directory from artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: tagged_pandas
+    - name:  extract achive
+      run: tar -xzvf tagged_pandas.tar.gz
+    - name: Check release notes are in sync
+      working-directory: pandas
+      run: git diff --exit-code $TAG master -- doc/source/whatsnew/$TAG.rst
 
   build-sdist:
     name: Build the sdist
