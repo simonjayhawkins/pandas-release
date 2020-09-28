@@ -33,15 +33,10 @@ jobs:
       run: |
        git config --global user.email "pandas-dev@python.org"
        git config --global user.name "Pandas Development Team"
-    - name: Setting conda path
-      run: echo ::add-path::$CONDA/bin
-    - name: Update conda
-      run: |
-        conda config --set quiet true --set always_yes true
-        conda update -n base -c defaults conda
-        conda list
     - name: Checkout pandas-release
       uses: actions/checkout@v2
+    - name: Update conda
+      uses: ./.github/actions/update-conda
     - name: Update conda environment for release process
       run: |
         conda env update -n base --file=environment.yml
@@ -83,20 +78,15 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential
         sudo apt-get clean
-    - name: Setting conda path
-      run: echo ::add-path::$CONDA/bin
+    - name: Checkout pandas-release
+      uses: actions/checkout@v2
     - name: Update conda
-      run: |
-        conda config --set quiet true --set always_yes true
-        conda update -n base -c defaults conda
-        conda list
+      uses: ./.github/actions/update-conda
     - name: Update conda environment for build process
       run: |
         conda install -y conda-build conda-verify gcc_linux-64 gxx_linux-64 numpy pytz python-dateutil nomkl Cython
         conda clean --all
         conda list
-    - name: Checkout pandas-release
-      uses: actions/checkout@v2
     - name: get pandas directory from artifacts
       uses: actions/download-artifact@v2
       with:
@@ -123,13 +113,10 @@ jobs:
     needs: build-sdist
     runs-on: ubuntu-latest
     steps:
-    - name: Setting conda path
-      run: echo ::add-path::$CONDA/bin
+    - name: Checkout pandas-release
+      uses: actions/checkout@v2
     - name: Update conda
-      run: |
-        conda config --set quiet true --set always_yes true
-        conda update -n base -c defaults conda
-        conda list
+      uses: ./.github/actions/update-conda
     - name: Create conda environment
       run: |
         conda create -n pip-test -y python=3.7 numpy pytz python-dateutil pytest pytest-mock hypothesis nomkl
@@ -162,20 +149,15 @@ jobs:
     env:
       PANDAS_VERSION: ${{ github.event.inputs.version }}
     steps:
-    - name: Setting conda path
-      run: echo ::add-path::$CONDA/bin
+    - name: Checkout pandas-release
+      uses: actions/checkout@v2
     - name: Update conda
-      run: |
-        conda config --set quiet true --set always_yes true
-        conda update -n base -c defaults conda
-        conda list
+      uses: ./.github/actions/update-conda
     - name: Create conda environment
       run: |
         conda create -n conda-build -y conda-build conda-verify gcc_linux-64 gxx_linux-64
         conda clean --all
         conda list
-    - name: Checkout pandas-release
-      uses: actions/checkout@v2
     - name: get sdist from artifacts
       uses: actions/download-artifact@v2
       with:
