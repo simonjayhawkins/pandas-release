@@ -147,6 +147,10 @@ jobs:
         source activate pip-test
         python -m pip install --no-deps --no-index --find-links=pandas/dist --only-binary=pandas pandas
         conda list
+    - name: Import pandas and print version
+      run: |
+        source activate pip-test
+        python -c "import pandas as pd;print(pd.__version__)"
     - name: Test
       # test_missing_required_dependencies: https://github.com/pandas-dev/pandas/issues/33999
       run: |
