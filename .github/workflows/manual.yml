@@ -59,6 +59,7 @@ jobs:
 
   check-release-notes:
     name: Check release notes are in sync
+    needs: tag-release
     runs-on: ubuntu-latest
     env:
       TAG: v${{ github.event.inputs.version }}
