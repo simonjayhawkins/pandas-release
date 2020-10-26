@@ -54,6 +54,7 @@ jobs:
     - name: patch pandas
       working-directory: pandas
       run: |
+        git checkout 1.1.x
         git apply ${{ steps.get.outputs.file }}
         git commit -a -m "apply patch"
     - name: Tag the release. (This doesn't push the tag)
