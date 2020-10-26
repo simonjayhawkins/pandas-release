@@ -34,14 +34,28 @@ jobs:
        git config --global user.name "Pandas Development Team"
     - name: Checkout pandas-release
       uses: actions/checkout@v2
-    - name: Update conda
-      uses: ./.github/actions/update-conda
-    - name: Update conda environment for release process
-      run: |
-        conda env update -n base --file=environment.yml
-        conda list
+    # - name: Update conda
+    #   uses: ./.github/actions/update-conda
+    # - name: Update conda environment for release process
+    #   run: |
+    #     conda env update -n base --file=environment.yml
+    #     conda list
     - name: Checkout pandas, pandas-wheels and pandas-feedstock
       run: make init-repos
+    - name: Get Gist
+      id: get
+      uses: andymckay/get-gist-action@master
+      with:
+        gistURL: "https://gist.github.com/simonjayhawkins/f26d3e26fd55159299b38204f7f3295c"
+    - name: Show Gist contents
+      id: run
+      run: |
+        cat ${{ steps.get.outputs.file }}
+    - name: patch pandas
+      working-directory: pandas
+      run: |
+        git apply ${{ steps.get.outputs.file }}
+        git commit -a -m "apply patch"
     - name: Tag the release. (This doesn't push the tag)
       run: make tag
     - name: Show git log
@@ -79,8 +93,8 @@ jobs:
     needs: tag-release
     runs-on: ubuntu-latest
     steps:
-    # Remove apt repos that are known to break from time to time 
-    # See https://github.com/actions/virtual-environments/issues/323  
+    # Remove apt repos that are known to break from time to time
+    # See https://github.com/actions/virtual-environments/issues/323
     # - name: Remove broken apt repos [Ubuntu]
     #   run: |
     #     for apt_file in `grep -lr microsoft /etc/apt/sources.list.d/`; do sudo rm $apt_file; done
