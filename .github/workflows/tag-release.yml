@@ -42,21 +42,21 @@ jobs:
     #     conda list
     - name: Checkout pandas, pandas-wheels and pandas-feedstock
       run: make init-repos
-    - name: Get Gist
-      id: get
-      uses: andymckay/get-gist-action@master
-      with:
-        gistURL: "https://gist.github.com/simonjayhawkins/f26d3e26fd55159299b38204f7f3295c"
-    - name: Show Gist contents
-      id: run
-      run: |
-        cat ${{ steps.get.outputs.file }}
-    - name: patch pandas
-      working-directory: pandas
-      run: |
-        git checkout 1.1.x
-        git apply ${{ steps.get.outputs.file }}
-        git commit -a -m "apply patch"
+    # - name: Get Gist
+    #   id: get
+    #   uses: andymckay/get-gist-action@master
+    #   with:
+    #     gistURL: "https://gist.github.com/simonjayhawkins/f26d3e26fd55159299b38204f7f3295c"
+    # - name: Show Gist contents
+    #   id: run
+    #   run: |
+    #     cat ${{ steps.get.outputs.file }}
+    # - name: patch pandas
+    #   working-directory: pandas
+    #   run: |
+    #     git checkout 1.1.x
+    #     git apply ${{ steps.get.outputs.file }}
+    #     git commit -a -m "apply patch"
     - name: Tag the release. (This doesn't push the tag)
       run: make tag
     - name: Show git log
