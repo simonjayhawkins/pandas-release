@@ -2,10 +2,7 @@ name: 'Update Conda'
 description: 'Prepare conda environment'
 runs:
   using: "composite"
-  steps: 
-    - name: Setting conda path
-      run: echo ::add-path::$CONDA/bin
-      shell: bash
+  steps:
     - name: Update conda
       run: |
         conda config --set quiet true --set always_yes true
