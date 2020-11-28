@@ -151,7 +151,7 @@ jobs:
       uses: ./.github/actions/update-conda
     - name: Create conda environment
       run: |
-        conda create -n pip-test -y python=3.7 numpy pytz python-dateutil pytest pytest-mock hypothesis nomkl
+        conda create -n pip-test -y python=3.7 numpy pytz python-dateutil pytest pytest-xdist pytest-mock hypothesis nomkl
         conda clean --all
         conda list
     - name: get sdist from artifacts
@@ -175,7 +175,7 @@ jobs:
     - name: Test
       run: |
         source activate pip-test
-        python -c "import pandas; pandas.test(extra_args=['-m not clipboard', '--skip-slow', '--skip-network', '--skip-db'])"
+        python -c "import pandas; pandas.test(extra_args=['-m not clipboard', '--skip-slow', '--skip-network', '--skip-db', "-n=2"])"
 
   conda-test:
     name: Conda Test
@@ -193,7 +193,7 @@ jobs:
       uses: ./.github/actions/update-conda
     - name: Create conda environment
       run: |
-        conda create -n conda-build -y conda-build conda-verify gcc_linux-64 gxx_linux-64
+        conda create -n conda-build -y conda-build conda-verify gcc_linux-64 gxx_linux-64 pytest-xdist
         conda clean --all
         conda list
     - name: get sdist from artifacts
